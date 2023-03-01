@@ -6,7 +6,7 @@ console.log("Hi Tailon");
 
 // console.log(favortieColor);
 
-let 
+let users = {};
 
 // Main function to begin the game
 function main(){
@@ -17,6 +17,13 @@ function main(){
 
     // Get the username
     let userName = prompt("Please type your name:")
+    // if (users.hasOwnProperty(userName)){
+    // }
+    // else {
+    //     users[userName] = userName;
+
+    // }
+    console.log(users)
 
     // Have the user input a guess
     let userGuess = prompt("Guess a number between 1 and 10.");
@@ -64,9 +71,36 @@ function match(num, name, numberOfGuesses, guessArr, ans){
 
 // function to see if the user wants to play again
 function playAgain(name, numberOfGuesses, guessArr){
+    let diff = 0;
+    if (users.hasOwnProperty(name)){
+        diff = Math.abs(users[name] - numberOfGuesses)
+        users[name] = numberOfGuesses;
 
-    // pops up with an alert to let the user know that they got the right answer.
-    alert(`Congratulations!!! ${name} got it right with only ${numberOfGuesses} tries!!!!`);
+        // check if their new score took less guesses than last game
+        if(users[name] < numberOfGuesses){
+            // pops up with an alert to let the user know that they got the right answer.
+            alert(`Congratulations!!! ${name} got it right with only ${numberOfGuesses} tries!!!!\n That is ${diff} fewer guess than your previous game!!!`);
+        }
+
+        // check if their new score took less guesses than last game
+        else if (users[name] > numberOfGuesses){
+            // pops up with an alert to let the user know that they got the right answer.
+            alert(`Congratulations!! ${name}, you guessed it right with ${diff} more guesses than last game.`)
+            
+        }
+        else{
+            alert(`Congratulations!! ${name}, you guessed it right with the same number of guesses as last game.`)
+        }
+        
+    }
+    // If they are not in the users object then they are added.
+    else {
+        users[name] = name;
+        diff = Math.abs(users[name] - numberOfGuesses)
+        users[name] = numberOfGuesses;
+        alert(`Congratulations!!! ${name} got it right with only ${numberOfGuesses} tries!!!!`);
+
+    }
 
     // lets the user know all the guesses that they made
     alert(`These are all the guesses you made:\n ${guessArr}`)
@@ -75,7 +109,7 @@ function playAgain(name, numberOfGuesses, guessArr){
     let newGame = prompt(`${name} do you want to play again? Type "y" or "n":`)
 
     //checks if the reply was yes and if so reruns the game. 
-    if (newGame.toLowerCase() == "y" || name.toLowerCase() == "yes"){
+    if (newGame.toLowerCase() === "y"){
         main()
     }
 }
